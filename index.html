@@ -154,9 +154,56 @@ src="https://www.facebook.com/tr?id=1553056022697842&ev=PageView&noscript=1"
     100% { box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 0 rgba(167,243,192,0); }
   }
 
+
+  /* Thank-you screen */
+  .thanks {
+    display: none;
+    text-align: center;
+    width: 100%;
+    max-width: 420px;
+  }
+  body.done .stack { display: none; }
+  body.done .thanks { display: block; animation: rise .7s cubic-bezier(.2,.8,.2,1) both; }
+  .check {
+    width: 84px; height: 84px;
+    margin: 0 auto 26px;
+    border-radius: 50%;
+    background: var(--green);
+    display: grid; place-items: center;
+    box-shadow: 0 0 0 0 rgba(167,243,192,.5);
+    animation: pulse 2s ease-out infinite;
+  }
+  .check svg { width: 42px; height: 42px; }
+  .check path {
+    stroke: var(--green-text); stroke-width: 5; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 60; stroke-dashoffset: 60;
+    animation: draw .6s .3s ease-out forwards;
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .thanks h1 { margin: 0 0 10px; font-size: 2rem; font-weight: 800; }
+  .thanks p  { margin: 0; font-size: 1.05rem; color: rgba(255,255,255,.75); }
+  .bar {
+    margin: 28px auto 0;
+    width: 200px; height: 4px;
+    border-radius: 4px;
+    background: rgba(255,255,255,.18);
+    overflow: hidden;
+  }
+  .bar i {
+    display: block; height: 100%; width: 100%;
+    background: var(--green);
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  body.done .bar i { animation: fill 5s linear forwards; }
+  @keyframes fill { to { transform: scaleX(1); } }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .btn { opacity: 1; }
+    body.done .bar i { animation: fill 5s linear forwards !important; }
+    .check path { stroke-dashoffset: 0; }
   }
 </style>
 </head>
@@ -170,13 +217,33 @@ src="https://www.facebook.com/tr?id=1553056022697842&ev=PageView&noscript=1"
       <a class="btn" href="https://t.me/+CBZMaj4t9q9mOTY1" data-btn="1">Click Here</a>
       <a class="btn" href="https://t.me/+CBZMaj4t9q9mOTY1" data-btn="2">Click Here</a>
     </div>
+
+    <div class="thanks" role="status" aria-live="polite">
+      <div class="check">
+        <svg viewBox="0 0 52 52"><path d="M14 27 l9 9 l17 -19"/></svg>
+      </div>
+      <h1>Thank you!</h1>
+      <p>Taking you to Telegram...</p>
+      <div class="bar"><i></i></div>
+    </div>
   </main>
 
 <script>
-  // Fire a Meta Pixel Lead event on every button click (works once fbq loads)
+  var LINK = "https://t.me/+CBZMaj4t9q9mOTY1";
+  var clicked = false;
+
   document.querySelectorAll('.btn').forEach(function (b) {
-    b.addEventListener('click', function () {
-      try { if (window.fbq) fbq('track', 'Lead'); } catch (e) {}
+    b.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (clicked) return;
+      clicked = true;
+
+      // Track the click with Meta Pixel (if loaded)
+      try { if (window.fbq) fbq('track', 'Lead'); } catch (err) {}
+
+      // Show thank-you screen, redirect after 5 seconds
+      document.body.classList.add('done');
+      setTimeout(function () { window.location.href = LINK; }, 5000);
     });
   });
 </script>
