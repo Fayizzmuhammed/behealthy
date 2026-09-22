@@ -269,42 +269,15 @@ src="https://www.facebook.com/tr?id=1553056022697842&ev=PageView&noscript=1"
   </main>
 
 <script>
-  var TG_WEB = "https://t.me/+srVjuT1uN-xmMGU1";
-  var TG_APP = "tg://resolve?domain=+srVjuT1uN-xmMGU1";
-
-  // In-app browsers (Instagram, Facebook, etc.) commonly block JS-driven
-  // redirects and custom URL schemes. For those, we let the plain <a href>
-  // navigate on its own — the safest, most compatible path. Everywhere else,
-  // we try the native Telegram app first (skips the t.me web gateway that
-  // timed out earlier), falling back to the normal t.me link automatically.
-  var ua = navigator.userAgent || "";
-  var isInAppBrowser = /FBAN|FBAV|Instagram|Line\/|MicroMessenger/i.test(ua);
-
-  if (!isInAppBrowser) {
-    document.querySelectorAll('a[data-tg]').forEach(function (b) {
-      b.addEventListener('click', function (e) {
-        try { if (window.fbq) fbq('track', 'Lead'); } catch (err) {}
-
-        var fallback = window.setTimeout(function () {
-          window.location.href = TG_WEB;
-        }, 800);
-
-        window.addEventListener('blur', function onBlur() {
-          clearTimeout(fallback);
-          window.removeEventListener('blur', onBlur);
-        });
-
-        e.preventDefault();
-        window.location.href = TG_APP;
-      });
+  // Plain, reliable navigation — the button's own href (a t.me invite link)
+  // does the work. No deep-link tricks: tg://resolve only works for public
+  // usernames, not private invite-link hashes like this one, and using it
+  // caused a "Username not found" error. Keeping this simple is correct.
+  document.querySelectorAll('a[data-tg]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      try { if (window.fbq) fbq('track', 'Lead'); } catch (err) {}
     });
-  } else {
-    document.querySelectorAll('a[data-tg]').forEach(function (b) {
-      b.addEventListener('click', function () {
-        try { if (window.fbq) fbq('track', 'Lead'); } catch (err) {}
-      });
-    });
-  }
+  });
 </script>
 </body>
 </html>
