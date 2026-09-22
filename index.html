@@ -4,12 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Join Now</title>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Join Now</title>
+<link rel="preconnect" href="https://t.me">
+<link rel="dns-prefetch" href="https://t.me">
 
 <!-- Meta Pixel Code -->
 <script>
@@ -234,6 +230,17 @@ src="https://www.facebook.com/tr?id=1553056022697842&ev=PageView&noscript=1"
     letter-spacing: .02em;
     color: var(--green);
   }
+  .fallback {
+    margin: 14px 0 0;
+    text-align: center;
+    font-size: .85rem;
+    color: rgba(255,255,255,.55);
+  }
+  .fallback a {
+    color: var(--green);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
 </style>
 </head>
 <body>
@@ -248,286 +255,44 @@ src="https://www.facebook.com/tr?id=1553056022697842&ev=PageView&noscript=1"
         <p class="subhead">Join our private Telegram community for exclusive updates, tips, and offers you won't find anywhere else.</p>
         <p class="microcopy">Tap below to join instantly — it takes 5 seconds.</p>
       </div>
-      <a class="btn" href="https://t.me/+4XEDjvtaDko4M2Nl" data-btn="1">
+      <a class="btn" href="https://t.me/+4XEDjvtaDko4M2Nl" data-btn="1" rel="noopener" data-tg="1">
         <span class="label">Click Here</span><span class="arrow">&#8594;</span>
         <span class="redirecting"><span class="spinner"></span>Redirecting...</span>
       </a>
-      <a class="btn" href="https://t.me/+4XEDjvtaDko4M2Nl" data-btn="2">
+      <a class="btn" href="https://t.me/+4XEDjvtaDko4M2Nl" data-btn="2" rel="noopener" data-tg="1">
         <span class="label">Click Here</span><span class="arrow">&#8594;</span>
         <span class="redirecting"><span class="spinner"></span>Redirecting...</span>
       </a>
+      <p class="fallback">Link not opening? <a href="https://t.me/+4XEDjvtaDko4M2Nl">Tap here instead</a></p>
     </div>
 
   </main>
 
 <script>
-  var LINK = "https://t.me/+4XEDjvtaDko4M2Nl";
-  var sent = false;
+  var TG_WEB = "https://t.me/+4XEDjvtaDko4M2Nl";
+  var TG_APP = "tg://resolve?domain=+4XEDjvtaDko4M2Nl";
 
-  function goNow() {
-    if (sent) return;
-    sent = true;
-    try { if (window.fbq) fbq('track', 'Lead'); } catch (err) {}
-    window.location.href = LINK;
-  }
-
-  document.querySelectorAll('.btn').forEach(function (b) {
+  // Try opening the native Telegram app first (skips the t.me web gateway,
+  // which is the part that timed out earlier). If the app isn't installed
+  // or the deep link doesn't fire, the browser just follows the normal
+  // href to t.me as a fallback — no user action needed either way.
+  document.querySelectorAll('a[data-tg]').forEach(function (b) {
     b.addEventListener('click', function (e) {
+      try { if (window.fbq) fbq('track', 'Lead'); } catch (err) {}
+
+      var usedFallback = false;
+      var fallback = window.setTimeout(function () {
+        usedFallback = true;
+        window.location.href = TG_WEB;
+      }, 800);
+
+      window.addEventListener('blur', function onBlur() {
+        clearTimeout(fallback);
+        window.removeEventListener('blur', onBlur);
+      });
+
       e.preventDefault();
-      goNow();
-    });
-  });
-</script>
-</body>
-</html>
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1553056022697842');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1553056022697842&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
-
-<style>
-  :root {
-    --navy: #030d2b;
-    --blue: #0a2472;
-    --blue-mid: #123a9c;
-    --blue-glow: #2563eb;
-    --green: #a7f3c0;
-    --green-hover: #c2f8d3;
-    --green-text: #06331a;
-    box-sizing: border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  *, *::before, *::after { box-sizing: inherit; }
-  html, body { height: 100%; margin: 0; }
-
-  body {
-    background: linear-gradient(160deg, var(--navy) 0%, var(--blue) 55%, var(--blue-mid) 100%);
-    font-family: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
-    color: #fff;
-    overflow: hidden;
-    position: relative;
-  }
-
-  /* Minimal background: two slow light orbs + faint grid */
-  .orb {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(70px);
-    pointer-events: none;
-    animation: float 16s ease-in-out infinite alternate;
-  }
-  .orb.one {
-    width: 60vmax; height: 60vmax;
-    top: -22vmax; left: -18vmax;
-    background: radial-gradient(circle, var(--blue-glow), transparent 68%);
-    opacity: .4;
-  }
-  .orb.two {
-    width: 50vmax; height: 50vmax;
-    bottom: -20vmax; right: -16vmax;
-    background: radial-gradient(circle, #4f8bff, transparent 68%);
-    opacity: .22;
-    animation-delay: -8s;
-  }
-  @keyframes float {
-    from { transform: translate3d(0,0,0) scale(1); }
-    to   { transform: translate3d(5vmax,3vmax,0) scale(1.12); }
-  }
-  .grid {
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-    background-size: 56px 56px;
-    -webkit-mask-image: radial-gradient(circle at center, #000 25%, transparent 75%);
-            mask-image: radial-gradient(circle at center, #000 25%, transparent 75%);
-    pointer-events: none;
-  }
-
-  .stage {
-    position: relative;
-    z-index: 1;
-    min-height: 100%;
-    display: grid;
-    place-items: center;
-    padding: 24px;
-  }
-  .stack {
-    width: 100%;
-    max-width: 420px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-
-  .btn {
-    position: relative;
-    display: block;
-    width: 100%;
-    padding: 20px 32px;
-    border: 0;
-    border-radius: 16px;
-    background: var(--green);
-    color: var(--green-text);
-    font-family: inherit;
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    text-decoration: none;
-    letter-spacing: .01em;
-    cursor: pointer;
-    overflow: hidden;
-    opacity: 0;
-    animation: rise .7s cubic-bezier(.2,.8,.2,1) forwards,
-               pulse 2.6s ease-out infinite;
-    transition: transform .2s ease, background .2s ease;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .btn:nth-child(1) { animation-delay: .1s, .8s; }
-  .btn:nth-child(2) { animation-delay: .25s, 1.1s; }
-
-  .btn:hover { background: var(--green-hover); transform: translateY(-2px) scale(1.02); }
-  .btn:active { transform: scale(.97); }
-  .btn:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
-
-  .btn .label { transition: opacity .2s ease; }
-  .btn .redirecting {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .btn.sending .label,
-  .btn.sending .arrow { display: none; }
-  .btn.sending .redirecting { display: inline-flex; }
-  .spinner {
-    width: 16px; height: 16px;
-    border: 2px solid rgba(6,51,26,.25);
-    border-top-color: var(--green-text);
-    border-radius: 50%;
-    animation: spin .7s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .arrow {
-    display: inline-block;
-    margin-left: 6px;
-    animation: nudge 1.2s ease-in-out infinite;
-  }
-  @keyframes nudge {
-    0%, 100% { transform: translateX(0); }
-    50%      { transform: translateX(6px); }
-  }
-
-  /* soft light sweep */
-  .btn::after {
-    content: "";
-    position: absolute;
-    top: 0; left: -60%;
-    width: 40%; height: 100%;
-    background: linear-gradient(100deg, transparent, rgba(255,255,255,.7), transparent);
-    transform: skewX(-20deg);
-    animation: sweep 3.4s ease-in-out infinite;
-  }
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(26px) scale(.97); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  @keyframes sweep {
-    0%, 55% { left: -60%; }
-    100%    { left: 130%; }
-  }
-  @keyframes pulse {
-    0%   { box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 0 rgba(167,243,192,.5); }
-    70%  { box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 20px rgba(167,243,192,0); }
-    100% { box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 0 rgba(167,243,192,0); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-    .btn { opacity: 1; }
-  }
-
-  .countdown {
-    margin: 4px 0 0;
-    text-align: center;
-    font-size: .9rem;
-    font-weight: 600;
-    letter-spacing: .04em;
-    color: rgba(255,255,255,.6);
-  }
-</style>
-</head>
-<body>
-  <div class="orb one"></div>
-  <div class="orb two"></div>
-  <div class="grid"></div>
-
-  <main class="stage">
-    <div class="stack">
-      <a class="btn" href="https://t.me/+4XEDjvtaDko4M2Nl" data-btn="1">
-        <span class="label">Click Here</span><span class="arrow">&#8594;</span>
-        <span class="redirecting"><span class="spinner"></span>Redirecting...</span>
-      </a>
-      <a class="btn" href="https://t.me/+4XEDjvtaDko4M2Nl" data-btn="2">
-        <span class="label">Click Here</span><span class="arrow">&#8594;</span>
-        <span class="redirecting"><span class="spinner"></span>Redirecting...</span>
-      </a>
-      <p class="countdown" id="countdown">Redirecting in 3...</p>
-    </div>
-
-  </main>
-
-<script>
-  var LINK = "https://t.me/+4XEDjvtaDko4M2Nl";
-  var sent = false;
-
-  function goNow() {
-    if (sent) return;
-    sent = true;
-    try { if (window.fbq) fbq('track', 'Lead'); } catch (err) {}
-    window.location.href = LINK;
-  }
-
-  // Live countdown shown separately, below the buttons
-  var seconds = 3;
-  var countdownEl = document.getElementById('countdown');
-  function updateCountdown() {
-    if (countdownEl) countdownEl.textContent = 'Redirecting in ' + seconds + '...';
-  }
-  updateCountdown();
-  var countdown = setInterval(function () {
-    seconds -= 1;
-    if (seconds <= 0) {
-      clearInterval(countdown);
-    } else {
-      updateCountdown();
-    }
-  }, 1000);
-
-  // Auto-redirect after 3 seconds
-  setTimeout(goNow, 3000);
-
-  // Clicking a button skips the wait and goes immediately
-  document.querySelectorAll('.btn').forEach(function (b) {
-    b.addEventListener('click', function (e) {
-      e.preventDefault();
-      goNow();
+      window.location.href = TG_APP;
     });
   });
 </script>
