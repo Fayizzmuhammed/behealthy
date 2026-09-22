@@ -164,16 +164,41 @@ src="https://www.facebook.com/tr?id=1553056022697842&ev=PageView&noscript=1"
   }
   body.done .stack { display: none; }
   body.done .thanks { display: block; animation: rise .7s cubic-bezier(.2,.8,.2,1) both; }
+  .ring-wrap {
+    position: relative;
+    width: 108px; height: 108px;
+    margin: 0 auto 28px;
+  }
+  .ring { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .ring-track, .ring-progress {
+    fill: none; cx: 50; cy: 50; r: 44;
+    stroke-width: 5;
+  }
+  .ring-track { stroke: rgba(255,255,255,.12); }
+  .ring-progress {
+    stroke: var(--green);
+    stroke-linecap: round;
+    stroke-dasharray: 276.5;
+    stroke-dashoffset: 276.5;
+    filter: drop-shadow(0 0 6px rgba(167,243,192,.7));
+  }
+  body.done .ring-progress { animation: ringfill 3s linear forwards; }
+  @keyframes ringfill { to { stroke-dashoffset: 0; } }
+
   .check {
-    width: 84px; height: 84px;
-    margin: 0 auto 26px;
+    position: absolute;
+    inset: 12px;
     border-radius: 50%;
     background: var(--green);
     display: grid; place-items: center;
-    box-shadow: 0 0 0 0 rgba(167,243,192,.5);
-    animation: pulse 2s ease-out infinite;
+    box-shadow: 0 0 24px rgba(167,243,192,.55);
+    animation: breathe 2.2s ease-in-out infinite;
   }
-  .check svg { width: 42px; height: 42px; }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.05); }
+  }
+  .check svg { width: 38px; height: 38px; }
   .check path {
     stroke: var(--green-text); stroke-width: 5; fill: none;
     stroke-linecap: round; stroke-linejoin: round;
@@ -181,28 +206,52 @@ src="https://www.facebook.com/tr?id=1553056022697842&ev=PageView&noscript=1"
     animation: draw .6s .3s ease-out forwards;
   }
   @keyframes draw { to { stroke-dashoffset: 0; } }
-  .thanks h1 { margin: 0 0 10px; font-size: 2rem; font-weight: 800; }
-  .thanks p  { margin: 0; font-size: 1.05rem; color: rgba(255,255,255,.75); }
+
+  .thanks h1 {
+    margin: 0 0 8px;
+    font-size: 2.1rem;
+    font-weight: 800;
+    letter-spacing: .01em;
+    background: linear-gradient(90deg, #fff, #cfe0ff, #fff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 2.5s linear infinite;
+  }
+  @keyframes shine {
+    to { background-position: 200% center; }
+  }
+  .thanks .status {
+    margin: 0;
+    font-size: .95rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.6);
+  }
   .bar {
-    margin: 28px auto 0;
+    margin: 26px auto 0;
     width: 200px; height: 4px;
     border-radius: 4px;
-    background: rgba(255,255,255,.18);
+    background: rgba(255,255,255,.14);
     overflow: hidden;
   }
   .bar i {
     display: block; height: 100%; width: 100%;
     background: var(--green);
+    box-shadow: 0 0 10px rgba(167,243,192,.8);
     transform-origin: left;
     transform: scaleX(0);
   }
-  body.done .bar i { animation: fill 5s linear forwards; }
+  body.done .bar i { animation: fill 3s linear forwards; }
   @keyframes fill { to { transform: scaleX(1); } }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .btn { opacity: 1; }
-    body.done .bar i { animation: fill 5s linear forwards !important; }
+    body.done .bar i { animation: fill 3s linear forwards !important; }
+    body.done .ring-progress { animation: ringfill 3s linear forwards !important; }
     .check path { stroke-dashoffset: 0; }
   }
 </style>
@@ -214,22 +263,28 @@ src="https://www.facebook.com/tr?id=1553056022697842&ev=PageView&noscript=1"
 
   <main class="stage">
     <div class="stack">
-      <a class="btn" href="https://t.me/+CBZMaj4t9q9mOTY1" data-btn="1">Click Here</a>
-      <a class="btn" href="https://t.me/+CBZMaj4t9q9mOTY1" data-btn="2">Click Here</a>
+      <a class="btn" href="https://t.me/+4XEDjvtaDko4M2Nl" data-btn="1">Click Here</a>
+      <a class="btn" href="https://t.me/+4XEDjvtaDko4M2Nl" data-btn="2">Click Here</a>
     </div>
 
     <div class="thanks" role="status" aria-live="polite">
-      <div class="check">
-        <svg viewBox="0 0 52 52"><path d="M14 27 l9 9 l17 -19"/></svg>
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 100 100">
+          <circle class="ring-track" cx="50" cy="50" r="44"></circle>
+          <circle class="ring-progress" cx="50" cy="50" r="44"></circle>
+        </svg>
+        <div class="check">
+          <svg viewBox="0 0 52 52"><path d="M14 27 l9 9 l17 -19"/></svg>
+        </div>
       </div>
-      <h1>Thank you!</h1>
-      <p>Taking you to Telegram...</p>
+      <h1>Welcome</h1>
+      <p class="status" id="statusLine">Connecting</p>
       <div class="bar"><i></i></div>
     </div>
   </main>
 
 <script>
-  var LINK = "https://t.me/+CBZMaj4t9q9mOTY1";
+  var LINK = "https://t.me/+4XEDjvtaDko4M2Nl";
   var clicked = false;
 
   document.querySelectorAll('.btn').forEach(function (b) {
@@ -243,7 +298,7 @@ src="https://www.facebook.com/tr?id=1553056022697842&ev=PageView&noscript=1"
 
       // Show thank-you screen, redirect after 5 seconds
       document.body.classList.add('done');
-      setTimeout(function () { window.location.href = LINK; }, 5000);
+      setTimeout(function () { window.location.href = LINK; }, 3000);
     });
   });
 </script>
