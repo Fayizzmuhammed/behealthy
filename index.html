@@ -255,46 +255,56 @@ src="https://www.facebook.com/tr?id=1553056022697842&ev=PageView&noscript=1"
         <p class="subhead">Join our private Telegram community for exclusive updates, tips, and offers you won't find anywhere else.</p>
         <p class="microcopy">Tap below to join instantly — it takes 5 seconds.</p>
       </div>
-      <a class="btn" href="https://t.me/+4XEDjvtaDko4M2Nl" data-btn="1" rel="noopener" data-tg="1">
+      <a class="btn" href="https://t.me/+srVjuT1uN-xmMGU1" data-btn="1" rel="noopener" data-tg="1">
         <span class="label">Click Here</span><span class="arrow">&#8594;</span>
         <span class="redirecting"><span class="spinner"></span>Redirecting...</span>
       </a>
-      <a class="btn" href="https://t.me/+4XEDjvtaDko4M2Nl" data-btn="2" rel="noopener" data-tg="1">
+      <a class="btn" href="https://t.me/+srVjuT1uN-xmMGU1" data-btn="2" rel="noopener" data-tg="1">
         <span class="label">Click Here</span><span class="arrow">&#8594;</span>
         <span class="redirecting"><span class="spinner"></span>Redirecting...</span>
       </a>
-      <p class="fallback">Link not opening? <a href="https://t.me/+4XEDjvtaDko4M2Nl">Tap here instead</a></p>
+      <p class="fallback">Link not opening? <a href="https://t.me/+srVjuT1uN-xmMGU1">Tap here instead</a></p>
     </div>
 
   </main>
 
 <script>
-  var TG_WEB = "https://t.me/+4XEDjvtaDko4M2Nl";
-  var TG_APP = "tg://resolve?domain=+4XEDjvtaDko4M2Nl";
+  var TG_WEB = "https://t.me/+srVjuT1uN-xmMGU1";
+  var TG_APP = "tg://resolve?domain=+srVjuT1uN-xmMGU1";
 
-  // Try opening the native Telegram app first (skips the t.me web gateway,
-  // which is the part that timed out earlier). If the app isn't installed
-  // or the deep link doesn't fire, the browser just follows the normal
-  // href to t.me as a fallback — no user action needed either way.
-  document.querySelectorAll('a[data-tg]').forEach(function (b) {
-    b.addEventListener('click', function (e) {
-      try { if (window.fbq) fbq('track', 'Lead'); } catch (err) {}
+  // In-app browsers (Instagram, Facebook, etc.) commonly block JS-driven
+  // redirects and custom URL schemes. For those, we let the plain <a href>
+  // navigate on its own — the safest, most compatible path. Everywhere else,
+  // we try the native Telegram app first (skips the t.me web gateway that
+  // timed out earlier), falling back to the normal t.me link automatically.
+  var ua = navigator.userAgent || "";
+  var isInAppBrowser = /FBAN|FBAV|Instagram|Line\/|MicroMessenger/i.test(ua);
 
-      var usedFallback = false;
-      var fallback = window.setTimeout(function () {
-        usedFallback = true;
-        window.location.href = TG_WEB;
-      }, 800);
+  if (!isInAppBrowser) {
+    document.querySelectorAll('a[data-tg]').forEach(function (b) {
+      b.addEventListener('click', function (e) {
+        try { if (window.fbq) fbq('track', 'Lead'); } catch (err) {}
 
-      window.addEventListener('blur', function onBlur() {
-        clearTimeout(fallback);
-        window.removeEventListener('blur', onBlur);
+        var fallback = window.setTimeout(function () {
+          window.location.href = TG_WEB;
+        }, 800);
+
+        window.addEventListener('blur', function onBlur() {
+          clearTimeout(fallback);
+          window.removeEventListener('blur', onBlur);
+        });
+
+        e.preventDefault();
+        window.location.href = TG_APP;
       });
-
-      e.preventDefault();
-      window.location.href = TG_APP;
     });
-  });
+  } else {
+    document.querySelectorAll('a[data-tg]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        try { if (window.fbq) fbq('track', 'Lead'); } catch (err) {}
+      });
+    });
+  }
 </script>
 </body>
 </html>
